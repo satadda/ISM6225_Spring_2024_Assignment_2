@@ -6,6 +6,9 @@ WRITE YOUR CODE IN THE RESPECTIVE QUESTION FUNCTION BLOCK
 
 */
 
+using System;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 
 namespace ISM6225_Spring_2024_Assignment_2
@@ -100,7 +103,8 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                return nums.Distinct().Count();
+
             }
             catch (Exception)
             {
@@ -135,7 +139,26 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return new List<int>();
+                // Initialize left and right pointers
+                int left = 0;
+                int right = 0;
+
+                // Iterate through the array
+                while (right < nums.Length)
+                {
+                    // If the current element is non-zero, swap it with the left pointer
+                    if (nums[right] != 0)
+                    {
+                        int temp = nums[left];
+                        nums[left] = nums[right];
+                        nums[right] = temp;
+                        left++;
+                    }
+                    right++;
+
+                }
+
+                    return nums;
             }
             catch (Exception)
             {
@@ -156,7 +179,7 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         Input: nums = [-1,0,1,2,-1,-4]
         Output: [[-1,-1,2],[-1,0,1]]
-        Explanation: 
+        Explanation: 1
         nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
         nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
         nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
@@ -186,7 +209,36 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return new List<IList<int>>();
+                HashSet<string> set = new HashSet<string>();
+                IList<IList<int>> uniqueResult = new List<IList<int>>();
+
+                // Iterate through the array with three nested loops
+                for (int i = 0; i < nums.Length - 2; i++)
+                {
+                    for (int j = i + 1; j < nums.Length - 1; j++)
+                    {
+                        for (int k = j + 1; k < nums.Length; k++)
+                        {
+                            // Check if the sum of three elements is zero and they are not duplicates
+                            if (nums[i] + nums[j] + nums[k] == 0 && i != j && i != k && j != k)
+                            {
+                                // Create a triplet and add it to the HashSet
+                                List<int> triplet = new List<int> { nums[i], nums[j], nums[k] };
+                                triplet.Sort(); // Sort the triplet to handle duplicate orders
+
+                                string keyt = string.Join(",", triplet);
+                                if (!set.Contains(keyt))
+                                {
+                                    uniqueResult.Add(triplet);
+                                    set.Add(keyt);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return uniqueResult;
+
             }
             catch (Exception)
             {
@@ -221,7 +273,22 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                int prev = nums[0];
+                int count = 1;
+                for (int i = 1; i<nums.Length; i++)
+                {
+                    if (nums[i] == 1 & prev == 1)
+                    {
+                        count++;
+                    }
+                    else {
+                        count = 1;
+                            };
+
+                    prev = nums[i];
+
+                }
+                return count;
             }
             catch (Exception)
             {
@@ -257,7 +324,20 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+
+                int decimalValue = 0;
+                int baseValue = 1; // Represents the current power of 2
+
+                while (binary > 0)
+                {
+                    int lastDigit = binary % 10; // Get the last digit of the binary number
+                    binary /= 10; // Remove the last digit
+                    decimalValue += lastDigit * baseValue; // Multiply the last digit by its corresponding power of 2 and add to the decimal value
+                    baseValue *= 2; // Increment the power of 2
+                }
+
+                return decimalValue;
+
             }
             catch (Exception)
             {
@@ -295,7 +375,17 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+
+                int gap = 0;
+                Array.Sort(nums);
+                for (int i = 1; i < nums.Length; i++)
+                {
+
+                    gap = Math.Max(gap, Math.Abs(nums[i] - nums[i-1]));
+
+                }
+                return gap;
+
             }
             catch (Exception)
             {
@@ -335,6 +425,18 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
+
+                // Sort & Reverse for descending order. This way we dont need to check all combinations
+                Array.Sort(nums);
+                Array.Reverse(nums);
+
+                for (int i = 0; i < nums.Length - 2; i++)
+                {
+                    if (nums[i] < nums[i + 1] + nums[i + 2])
+                    { // Check triangle inequality theorem
+                        return nums[i] + nums[i + 1] + nums[i + 2];
+                    }
+                }
                 return 0;
             }
             catch (Exception)
@@ -389,7 +491,12 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return "";
+                int index;
+                while ((index = s.IndexOf(part)) != -1)
+                {
+                    s = s.Remove(index, part.Length); // Remove the found occurrence of part
+                }
+                return s;
             }
             catch (Exception)
             {
